@@ -1,17 +1,46 @@
 // bg.js - event page for Great Barrier
 
-// load settings, etc
+var settings = {
+    "reuse" : false,
+    "block" : true,
+    "warnmixed" : true,
+    "wl" : new Array("en.wikipedia.org", "www.google.ca")
+}
 
-var whitelist = [
-"https://mail.google.com",
-"http://slashdot.org"
-];
+/*
+ * Loads any synced settings or creates defaults
+ */
+function loadSettings() {
+
+    chrome.storage.local.get(null, function(res) {
+        
+        if (res.timestamp) {
+            settings = res;
+        }
+        else {
+            // no settings object found, so leave settings as default
+            console.log("No sync'd settings found; using defaults");
+        }
+    });
+};
 
 var isOnWhitelist = function(url){
-	for (var i = 0; i < whitelist.length; ++i)
-		if (url.indexOf(whitelist[i]) == 0)
+
+    if (url.indexOf("http://") == 0)
+        url = url.replace("http://", "");
+    else if (url.indexOf("https://") == 0)
+        url = url.replace("https://", "");
+
+    var firstSlash = url.indexOf("/");
+
+	for (var i = 0; i < settings.wl.length; ++i) {
+	    var wle = settings.wl[i];
+	    
+		if (url.indexOf(wle) + wle.length <= firstSlash)
 			return true;
 		
+	}
+	
 	return false;
 };
 
@@ -30,16 +59,19 @@ chrome.webRequest.onCompleted.addListener(function(info) {
 	}
 	else
 	{
-		chrome.notifications.create("n1234",
-			{
+	    // TODO: check for mixed tabs condition
+	
+	    var notif = {
 				type: "basic",
 				title: "You are mixing trusted and untrusted tabs",
 				message: "You have just opened a trusted site in the same window as one or more untrusted sites. For optimal security, you should open your untrusted sites in an Incognito window",
 				buttons: [{title: "Close untrusted tabs"}, {title: "Ignore this warning"}],
 				iconUrl: warningIcon
-			},
-			function(nId) {}
-		);
+			}
+
+		// chrome.notifications.create("n1234", notif, function(nId){});
+		
+		
 	}
 },
 // filters

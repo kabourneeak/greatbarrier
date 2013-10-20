@@ -3,7 +3,7 @@ var settings = {
     "reuse" : false,
     "block" : true,
     "warnmixed" : true,
-    "wl" : new Array("http://en.wikipedia.org", "http://google.ca")
+    "wl" : new Array("en.wikipedia.org", "www.google.ca")
 }
 
 
@@ -58,6 +58,8 @@ function deleteWlEntry(index) {
     console.log("delete entry " + index);    
     
     settings.wl.splice(index, 1);
+
+    saveSettings();
     
     createWlUI();
 };
@@ -133,11 +135,11 @@ function addNewWlEntry() {
     url = url.toLowerCase();
     
     if (url.indexOf('http://') == 0) {
-        // do nothing
+        url = url.replace("http://", "");
     } else if (url.indexOf('https://') == 0) {
-        // do nothing
+        url = url.replace("https://", "");
     } else {
-        url = "http://" + url;
+        // do nothing
     }
 
     // check for duplicates
