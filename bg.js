@@ -7,7 +7,25 @@ var settings = {
     "wl" : new Array("en.wikipedia.org", "www.google.ca")
 }
 
-var registeredTabs = {};
+var tabReg = {
+    add : function(tabId){
+            this._list[tabId] = "registered";
+            console.log("registered tab " + tabId);
+        },
+    
+    has : function(tabId){
+            return this._list.hasOwnProperty(tabId);
+        },
+    
+    rem : function(tabId){
+            if (this._list.hasOwnProperty(tabId)) {
+    			delete this._list[tabId];
+                console.log("deregistered tab " + tabId);
+            }
+        },
+    
+    _list : {},
+};
 
 /*
  * Loads any synced settings or creates defaults
@@ -62,7 +80,7 @@ function onCompletedHandler(info) {
 			// navigating somewhere via the address bar
 			console.log("Skipping registration of tab -1");
 		} else {
-			registerBarrier(info);
+		    tabReg.add(info.tabId);
 		}
 	}
 	else
@@ -83,7 +101,7 @@ function onCompletedHandler(info) {
 
 function onBeforeRequestHandler(info) {
 
-	if (registeredTabs.hasOwnProperty(info.tabId))
+	if (tabReg.has(info.tabId))
 	{
 		if (isOnWhitelist(info.url))
 		{
@@ -109,11 +127,6 @@ function onBeforeRequestHandler(info) {
 	} else {
 		console.log("ignoring request on tab " + info.tabId + " to " + info.url);
 	}
-};
-
-function registerBarrier(info) {
-	registeredTabs[info.tabId] = "registered";
-	console.log("registered " + info.tabId);
 };
 
 function init() {
@@ -143,16 +156,19 @@ function init() {
 	
 	// Tab events
 	chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
-		if (registeredTabs.hasOwnProperty(tabId)) {
-			console.log("deregistering Tab " + tabId);
-			delete registeredTabs[tabId];
-		}
+	    tabReg.rem(tabId);
 	});
 	
 	chrome.tabs.onCreated.addListener(function(tab){
-		if (registeredTabs.hasOwnProperty(tab.openerTabId)) {
+	
+		console.log("new tab " + tab.id + ", opened by " + tab.openerTabId + ", url " + tab.url);
+	
+	    if (tab.url == "chrome://newtab/") {
+			console.log("ignoring chrome://newtab/");
+			
+	    } else if (tabReg.has(tab.openerTabId)) {
 			console.log("registering tab " + tab.id + " opened by " + tab.openerTabId);
-			registeredTabs[tab.id] = "registered";
+			tabReg.add(tab.id);
 		}
 	});
 	
@@ -162,3 +178,4 @@ function init() {
  * Application start-up here
  */
 init();
+
