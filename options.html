@@ -39,7 +39,12 @@
 			    <h3>Homepage</h3>
 			    <section>
 
-			        <p>Your homepage is not on your whitelist. If you trust your homepage, you can add it to your whitelist now. Otherwise, you should consider using a different homepage.</p>
+			        <p>
+			            Your homepage is not on your whitelist. If you trust 
+			            your homepage, you can add it to your whitelist now. 
+			            Otherwise, you should consider using a different 
+			            homepage.
+			        </p>
 			        <p>
 			            <button id="hp_addtowl">Add to Whitelist</button>
 			            <button id="hp_chng">Change Homepage</button>
@@ -50,13 +55,19 @@
 			    <h3>General</h3>
 			    <section>
 			    <p>
-				    <input type="checkbox" id="warnmixed"> Display a warning when I have trusted and non-trusted tabs open in the same window.
+				    <input type="checkbox" id="warn_mixed"> 
+				    Display a warning when I have protected and non-protected 
+				    tabs open in the same session.
 			    </p>
 			    <p>
-				    <input type="checkbox" id="block"> Block navigation for links which cannot be redirected to an Incognito Window
+				    <input type="checkbox" id="protect_new"> 
+				    Open New Tabs as &quot;protected&quot;. This will cause an
+				    Incognito window to open if you type a URL to a
+				    non-whitelisted site.
 			    </p>
 			    <p>
-				    <input type="checkbox" id="reuse"> Reuse Incognito Windows
+				    <input type="checkbox" id="reuse_incognito"> 
+				    Reuse existing Incognito Windows for new Incognito Tabs
 			    </p>
 			    </section>
 		    </div>

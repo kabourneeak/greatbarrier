@@ -1,9 +1,9 @@
 
 var settings = {
-    "reuse" : false,
-    "block" : true,
-    "warnmixed" : true,
-    "wl" : new Array("en.wikipedia.org", "www.google.ca")
+    "reuse_incognito" : false,
+    "protect_new" : true,
+    "warn_mixed" : true,
+    "wl" : new Array("en.wikipedia.org", "google.ca")
 }
 
 
@@ -45,9 +45,9 @@ function initSettings() {
  */
 function applySettings() {
 
-    $("#warnmixed").prop("checked", settings.warnmixed);
-    $("#block").prop("checked", settings.block);
-    $("#reuse").prop("checked", settings.reuse);
+    $("#warn_mixed").prop("checked", settings.warn_mixed);
+    $("#protect_new").prop("checked", settings.protect_new);
+    $("#reuse_incognito").prop("checked", settings.reuse_incognito);
 
     // write out whitelist
     createWlUI();
@@ -164,18 +164,18 @@ function initEvents() {
 
     // TODO: invoke a save/sync event when a setting is updated
 
-    $('#reuse')[0].addEventListener('change', function() {
-        settings.reuse = $('#reuse').prop("checked");
+    $('#reuse_incognito')[0].addEventListener('change', function() {
+        settings.reuse_incognito = $('#reuse_incognito').prop("checked");
         saveSettings();
     });
      
-    $('#block')[0].addEventListener('change', function() {
-        settings.block = $('#block').prop("checked");
+    $('#protect_new')[0].addEventListener('change', function() {
+        settings.protect_new = $('#protect_new').prop("checked");
         saveSettings();
     });
 
-    $('#warnmixed')[0].addEventListener('change', function() {
-        settings.warnmixed = $('#warnmixed').prop("checked");
+    $('#warn_mixed')[0].addEventListener('change', function() {
+        settings.warn_mixed = $('#warn_mixed').prop("checked");
         saveSettings();
     });
     
