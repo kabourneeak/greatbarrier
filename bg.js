@@ -164,7 +164,15 @@ function init() {
 		console.log("new tab " + tab.id + ", opened by " + tab.openerTabId + ", url " + tab.url);
 	
 	    if (tab.url == "chrome://newtab/") {
-			console.log("ignoring chrome://newtab/");
+	        if (settings.protect_new) {
+	            console.log("registering new tab as per user-preference");
+	            tabReg.add(tab.id);
+	        } else {
+	            console.log("ignoring new tab as per user-preference");
+	        }
+	    }
+	    else if (tab.url.indexOf("chrome") == 0) {
+			console.log("ignoring built-in page " + tab.url);
 			
 	    } else if (tabReg.has(tab.openerTabId)) {
 			console.log("registering tab " + tab.id + " opened by " + tab.openerTabId);
