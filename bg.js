@@ -71,8 +71,7 @@ var tabReg = {
         },
         
     isMixed : function() {
-            this.lastMixedState = ((this._numWhite > 0) && (this._numBlack > 0));
-            return this.lastMixedState;
+            return ((this._numWhite > 0) && (this._numBlack > 0));
         },
     
     lastMixedState : false,
@@ -91,8 +90,7 @@ function loadSettings() {
         
         if (res.timestamp) {
             settings = res;
-        }
-        else {
+        } else {
             // no settings object found, so leave settings as default
             console.log("No sync'd settings found; using defaults");
         }
@@ -101,10 +99,11 @@ function loadSettings() {
 
 function isOnWhitelist(url){
 
-    if (url.indexOf("http://") == 0)
+    if (url.indexOf("http://") == 0) {
         url = url.replace("http://", "");
-    else if (url.indexOf("https://") == 0)
+    } else if (url.indexOf("https://") == 0) {
         url = url.replace("https://", "");
+    }
 
     var firstSlash = url.indexOf("/");
 
@@ -140,10 +139,11 @@ function onCompletedHandler(info) {
 
 function checkMixedStatus() {
 
-    var lastMixedState = tabReg.lastMixedState;
+    var curMixedState = tabReg.isMixed();
     
-	if (tabReg.isMixed() != lastMixedState) {
-	    
+	if (curMixedState != tabReg.lastMixedState) {
+        tabReg.lastMixedState = curMixedState;
+        
 	    if (tabReg.isMixed()) {
 	        console.log("Mixed tabs now exist");
 	
@@ -170,35 +170,40 @@ function updateUI(tabId) {
     // TODO:  update state of Icon, menu to match page being shown
     
     if (tabReg.isWhite(tabId)) {
-    }
-    else {
+    } else {
+        
+        if (tabReg.isMixed() {
+        }
+    
     }
 
 }
 
 function onBeforeRequestHandler(info) {
 
-	if (tabReg.isWhite(info.tabId))
-	{
-		if (isOnWhitelist(info.url))
-		{
-			// 	.. allow
+	if (tabReg.isWhite(info.tabId))	{
+		if (isOnWhitelist(info.url)) {
+			// 	.. allow nav to proceed unhindered
 			return {cancel : false}
-			
-			// will get checked for registration by onComplete
-		}
-		else
-		{
+		} else {
 			//  .. cancel, and open in an Incognito window
 			
 			console.log("(" + info.tabId +  ") Redirected non-whitelist entry to " + info.url);
 			
 			chrome.windows.create({url: info.url, incognito: true});
 
-			// ultimate hack right here:
-			return {redirectUrl : "javascript:window.history.go(0)"};
+			// ultimate hack right here: stop the navigation on the original tab
+			// without chrome putting up an error screen
+			return {redirectUrl : "javascript:return false;"};
+			
+			// TODO: if this tab has never had an onCompleted event, then 
+			// it is probably safe to tab.remove() it.
+			
 		}
 	} else {
+	    // tab is black; we don't control navigation on black tabs.  If the nav
+	    // is to a whitelisted page, the tab will become registered when
+	    // onCompleted runs.
 		console.log("(" + info.tabId +  ") ignoring nav to " + info.url);
 	}
 };
