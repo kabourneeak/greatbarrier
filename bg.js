@@ -1,7 +1,6 @@
 // bg.js - event page for Great Barrier
 
 var settings = {
-    "reuse_incognito" : false,
     "protect_new" : true,
     "warn_mixed" : true,
     "wl" : new Array("en.wikipedia.org", "google.ca")

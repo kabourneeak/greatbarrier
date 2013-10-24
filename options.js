@@ -1,6 +1,5 @@
 
 var settings = {
-    "reuse_incognito" : false,
     "protect_new" : true,
     "warn_mixed" : true,
     "wl" : new Array("en.wikipedia.org", "google.ca")
@@ -47,7 +46,6 @@ function applySettings() {
 
     $("#warn_mixed").prop("checked", settings.warn_mixed);
     $("#protect_new").prop("checked", settings.protect_new);
-    $("#reuse_incognito").prop("checked", settings.reuse_incognito);
 
     // write out whitelist
     createWlUI();
@@ -164,11 +162,6 @@ function initEvents() {
 
     // TODO: invoke a save/sync event when a setting is updated
 
-    $('#reuse_incognito')[0].addEventListener('change', function() {
-        settings.reuse_incognito = $('#reuse_incognito').prop("checked");
-        saveSettings();
-    });
-     
     $('#protect_new')[0].addEventListener('change', function() {
         settings.protect_new = $('#protect_new').prop("checked");
         saveSettings();
