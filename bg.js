@@ -7,23 +7,79 @@ var settings = {
 }
 
 var tabReg = {
-    add : function(tabId){
-            this._list[tabId] = "registered";
-            console.log("registered tab " + tabId);
+    addWhite : function(tabId){
+            if (this._list.hasOwnProperty(tabId)) {
+                if (this._list[tabId] == "black") {
+                    this._list[tabId] = "white";
+                    this._numBlack -= 1;
+                    this._numWhite += 1;
+                    console.log("(" + tabId +  ") has changed to white");
+                } else {
+                    // do nothing
+                }
+            
+            } else {
+                this._list[tabId] = "white";
+                this._numWhite += 1;
+                console.log("(" + tabId +  ") registered as white");
+            }
+        },
+
+    addBlack : function(tabId){
+            if (this._list.hasOwnProperty(tabId)) {
+                if (this._list[tabId] == "white") {
+                    this._list[tabId] = "black";
+                    this._numWhite -= 1;
+                    this._numBlack += 1;
+                    console.log("(" + tabId +  ") has changed to black");
+                } else {
+                    // do nothing
+                }
+            
+            } else {
+                this._list[tabId] = "black";
+                this._numBlack += 1;
+                console.log("(" + tabId +  ") registered as black");
+            }
         },
     
-    has : function(tabId){
-            return this._list.hasOwnProperty(tabId);
+    isWhite : function(tabId){
+            if (this._list.hasOwnProperty(tabId))
+                return this._list[tabId] == "white";
+            
+            return false;
+        },
+     
+    isBlack : function(tabId){
+            if (this._list.hasOwnProperty(tabId))
+                return this._list[tabId] == "black";
+            
+            return false;
         },
     
     rem : function(tabId){
             if (this._list.hasOwnProperty(tabId)) {
+                if (this._list[tabId] == "white") {
+                    this._numWhite -= 1;
+                } else {
+                    this._numBlack -= 1;
+                }
+            
     			delete this._list[tabId];
-                console.log("deregistered tab " + tabId);
+                console.log("(" + tabId +  ") deregistered");
             }
         },
+        
+    isMixed : function() {
+            this.lastMixedState = ((this._numWhite > 0) && (this._numBlack > 0));
+            return this.lastMixedState;
+        },
+    
+    lastMixedState : false,
     
     _list : {},
+    _numWhite : 0,
+    _numBlack : 0,
 };
 
 /*
@@ -58,7 +114,6 @@ function isOnWhitelist(url){
 	    
 		if ((iof >= 0) && (iof + wle.length <= firstSlash))
 			return true;
-
 	}
 	
 	return false;
@@ -72,35 +127,58 @@ var warningIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAAC
 function onCompletedHandler(info) {
     console.log("(" + info.tabId +  ") onComplete: " + info.url);
 	
-	if (isOnWhitelist(info.url))
-	{
-		if (info.tabId == -1) {
-			// we don't register -1, since this would prevent the user from ever
-			// navigating somewhere via the address bar
-			console.log("Skipping registration of tab -1");
-		} else {
-		    tabReg.add(info.tabId);
-		}
+	if (isOnWhitelist(info.url)) {
+	    tabReg.addWhite(info.tabId);
+	} else {
+	    tabReg.addBlack(info.tabId);
 	}
-	else
-	{
-	    // TODO: check for mixed tabs condition
 	
-	    var notif = {
-				type: "basic",
-				title: "You are mixing trusted and untrusted tabs",
-				message: "You have just opened a trusted site in the same window as one or more untrusted sites. For optimal security, you should open your untrusted sites in an Incognito window",
-				buttons: [{title: "Close untrusted tabs"}, {title: "Ignore this warning"}],
-				iconUrl: warningIcon
-			}
+	checkMixedStatus();
+	
+    updateUI(info.tabId);
+};
 
-		// chrome.notifications.create("n1234", notif, function(nId){});
+function checkMixedStatus() {
+
+    var lastMixedState = tabReg.lastMixedState;
+    
+	if (tabReg.isMixed() != lastMixedState) {
+	    
+	    if (tabReg.isMixed()) {
+	        console.log("Mixed tabs now exist");
+	
+            // TODO: handle mixed tabs condition
+
+            var notif = {
+			        type: "basic",
+			        title: "You are mixing trusted and untrusted tabs",
+			        message: "You have just opened a trusted site in the same window as one or more untrusted sites. For optimal security, you should open your untrusted sites in an Incognito window",
+			        buttons: [{title: "Close untrusted tabs"}, {title: "Ignore this warning"}],
+			        iconUrl: warningIcon
+		        }
+
+	        // chrome.notifications.create("n1234", notif, function(nId){});
+	        
+	    } else {
+	        console.log("No more mixed tabs");
+	    }
 	}
 };
 
+function updateUI(tabId) {
+
+    // TODO:  update state of Icon, menu to match page being shown
+    
+    if (tabReg.isWhite(tabId)) {
+    }
+    else {
+    }
+
+}
+
 function onBeforeRequestHandler(info) {
 
-	if (tabReg.has(info.tabId))
+	if (tabReg.isWhite(info.tabId))
 	{
 		if (isOnWhitelist(info.url))
 		{
@@ -113,10 +191,7 @@ function onBeforeRequestHandler(info) {
 		{
 			//  .. cancel, and open in an Incognito window
 			
-			// we should remember any Incognito window we open and reuse it if it is
-			// still open
-			
-			console.log("Redirected non-whitelist entry to " + info.url);
+			console.log("(" + info.tabId +  ") Redirected non-whitelist entry to " + info.url);
 			
 			chrome.windows.create({url: info.url, incognito: true});
 
@@ -124,7 +199,25 @@ function onBeforeRequestHandler(info) {
 			return {redirectUrl : "javascript:window.history.go(0)"};
 		}
 	} else {
-		console.log("ignoring request on tab " + info.tabId + " to " + info.url);
+		console.log("(" + info.tabId +  ") ignoring nav to " + info.url);
+	}
+};
+
+function onCreatedHandler(tab) {
+    if (tab.url == "chrome://newtab/") {
+        if (settings.protect_new) {
+            console.log("(" + tab.id +  ") registering new tab as per user-preference");
+            tabReg.addWhite(tab.id);
+        } else {
+            console.log("(" + tab.id +  ") ignoring new tab as per user-preference");
+        }
+    }
+    else if (tab.url.indexOf("chrome") == 0) {
+		console.log("(" + tab.id +  ") ignoring built-in page " + tab.url);
+		
+    } else if (tabReg.isWhite(tab.openerTabId)) {
+		console.log("(" + tab.id +  ") registering tab opened by " + tab.openerTabId);
+		tabReg.addWhite(tab.id);
 	}
 };
 
@@ -156,29 +249,15 @@ function init() {
 	// Tab events
 	chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
 	    tabReg.rem(tabId);
+	    checkMixedStatus();
 	});
 	
-	chrome.tabs.onCreated.addListener(function(tab){
+	chrome.tabs.onCreated.addListener(onCreatedHandler);
 	
-		console.log("new tab " + tab.id + ", opened by " + tab.openerTabId + ", url " + tab.url);
-	
-	    if (tab.url == "chrome://newtab/") {
-	        if (settings.protect_new) {
-	            console.log("registering new tab as per user-preference");
-	            tabReg.add(tab.id);
-	        } else {
-	            console.log("ignoring new tab as per user-preference");
-	        }
-	    }
-	    else if (tab.url.indexOf("chrome") == 0) {
-			console.log("ignoring built-in page " + tab.url);
-			
-	    } else if (tabReg.has(tab.openerTabId)) {
-			console.log("registering tab " + tab.id + " opened by " + tab.openerTabId);
-			tabReg.add(tab.id);
-		}
+	chrome.tabs.onActivated.addListener(function(info){
+	    console.log("(" + info.tabId + ") now active");
+        updateUI(info.tabId);
 	});
-	
 }
 
 /*
