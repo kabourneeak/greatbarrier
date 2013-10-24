@@ -220,9 +220,28 @@ function initAnim() {
   
 };
 
+function initIntrospection() {
+    /*
+     * Look into other chrome settings and update the UI appropriately
+     */
+    
+    chrome.extension.isAllowedIncognitoAccess(function(res){
+        if (res) {
+            // TODO: display warning
+        }
+        else {
+            // TODO: display "everything is okay"
+        }
+    });
+
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     initSettings();
     initEvents();
     initAnim();
+    initIntrospection();
+    
+    // TODO: arrange for introspection function to be called on focus
 }, false);
 
