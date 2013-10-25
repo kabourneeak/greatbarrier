@@ -167,16 +167,17 @@ function checkMixedStatus() {
 
 function updateUI(tabId) {
 
-    // TODO:  update state of Icon, menu to match page being shown
+    // TODO:  update popup to be context sensitive?
     
-    if (tabReg.isWhite(tabId)) {
-    } else {
-        
-        if (tabReg.isMixed() {
+    if (tabReg.isMixed()) {
+        if (tabReg.isBlack(tabId)) {
+            chrome.browserAction.setIcon({path: "icon_mixed_b.png"});
+        } else {
+            chrome.browserAction.setIcon({path: "icon_mixed_w.png"});
         }
-    
-    }
-
+    } else {
+        chrome.browserAction.setIcon({path: "icon_good.png"});
+    }   
 }
 
 function onBeforeRequestHandler(info) {
@@ -255,6 +256,7 @@ function init() {
 	chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
 	    tabReg.rem(tabId);
 	    checkMixedStatus();
+	    updateUI();
 	});
 	
 	chrome.tabs.onCreated.addListener(onCreatedHandler);
