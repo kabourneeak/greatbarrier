@@ -129,9 +129,9 @@ function addNewWlEntry() {
    
     /* validate and massage value */
 
-    // TODO: make this better
     url = url.toLowerCase();
-    
+
+	// get rid of protocol
     if (url.indexOf('http://') == 0) {
         url = url.replace("http://", "");
     } else if (url.indexOf('https://') == 0) {
@@ -140,9 +140,13 @@ function addNewWlEntry() {
         // do nothing
     }
 
+	// get rid of page spec
+	var firstSlash = url.indexOf("/");
+	if (firstSlash > -1)
+		url = url.substring(0, firstSlash);
+	
     // check for duplicates
     if (settings.wl.indexOf(url) != -1) {
-        // TODO: flash text box?
         return;
     }
 
@@ -159,8 +163,6 @@ function addNewWlEntry() {
 };
 
 function initEvents() {
-
-    // TODO: invoke a save/sync event when a setting is updated
 
     $('#protect_new')[0].addEventListener('change', function() {
         settings.protect_new = $('#protect_new').prop("checked");
@@ -227,10 +229,12 @@ function initIntrospection() {
     
     chrome.extension.isAllowedIncognitoAccess(function(res){
         if (res) {
-            // TODO: display warning
+			$("#ip_off").css({'display': 'none'});
+			$("#ip_on").css({'display': 'block'});
         }
         else {
-            // TODO: display "everything is okay"
+			$("#ip_on").css({'display': 'none'});
+			$("#ip_off").css({'display': 'block'});
         }
     });
 
@@ -242,6 +246,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initAnim();
     initIntrospection();
     
-    // TODO: arrange for introspection function to be called on focus
 }, false);
 
+window.onfocus = function() {
+	// re-evaluate things after returning to window
+    initIntrospection();
+};

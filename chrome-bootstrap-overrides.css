@@ -10,3 +10,21 @@
 #new_wl {
   width: 80%;
 }
+
+#wlexamples dt {
+  font-weight: bold;
+}
+
+#wlexamples dd {
+  margin-left: 1.0em;
+  margin-bottom: 0.5em;
+  color: grey;
+}
+
+#ip_off {
+  display: none;
+}
+
+#ip_on {
+  display: none;
+}

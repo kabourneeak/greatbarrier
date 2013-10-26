@@ -184,7 +184,7 @@ function checkMixedStatus() {
 
 function updateUI(tabId) {
 
-    // TODO:  update popup to be context sensitive?
+    // TODO:  update popup to be context sensitive
     
     if (tabReg.isMixed()) {
         if (tabReg.isBlack(tabId)) {
