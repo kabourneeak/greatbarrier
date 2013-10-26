@@ -1,0 +1,12 @@
+
+.chrome-bootstrap .checkbox span {
+  font-weight: bold;
+}
+.chrome-bootstrap .checkbox p {
+  margin-top: 0em;
+  margin-left: 1.5em;
+}
+
+#new_wl {
+  width: 80%;
+}

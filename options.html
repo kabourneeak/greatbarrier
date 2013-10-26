@@ -3,6 +3,7 @@
 <head>
 	<title>Great Barrier Settings</title>
     <link rel="stylesheet" type="text/css" href="chrome-bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="chrome-bootstrap-overrides.css"/>
     <script src="zepto.min.js" type="text/javascript"></script>
     <script src="options.js" type="text/javascript"></script>
 </head>
@@ -36,6 +37,28 @@
 		    </header>
 		    <div class="content">
 		
+			    <h3>General</h3>
+			    <section>
+				<div class="checkbox">
+					<input type="checkbox" id="warn_mixed">
+					<span> Mixed Tabs Warning</span>
+					<p>Display a warning when there are whitelisted and 
+					non-whitelisted tabs open at the same time.</p>
+				</div>
+			    <div class="checkbox">
+				    <input type="checkbox" id="protect_new"> 
+					<span>Monitor New Tabs</span>
+					<p>Apply whitelist to URLs opened from	new tabs. This will 
+					cause an Incognito window to open if you are at a new tab 
+					and type a URL to a non-whitelisted site.</p>
+			    </div>
+			    </section>
+
+			    <h3>Incognito Permission</h3>
+			    <section id="incognito_perm">
+				
+			    </section>
+
 			    <h3>Homepage</h3>
 			    <section>
 
@@ -51,27 +74,7 @@
 			        </p>
 
 			    </section>
-
-			    <h3>Incognito Permission</h3>
-			    <section id="incognito_perm">
-			                            
-			    </section>
-
-			    <h3>General</h3>
-			    <section>
-			    <p>
-				    <input type="checkbox" id="warn_mixed"> 
-				    Display a warning when I have protected and non-protected 
-				    tabs open in the same session.
-			    </p>
-			    <p>
-				    <input type="checkbox" id="protect_new"> 
-				    Open New Tabs as &quot;protected&quot;. This will cause an
-				    Incognito window to open if you are at a new tab and type a 
-				    URL to a non-whitelisted site.
-			    </p>
-			    </section>
-		    </div>
+			</div>
 	    </div>
 	    
 	    <!-- Whitelist -->
