@@ -152,7 +152,7 @@ var notif = {
 	type: "basic",
 	title: "Mixed Tabs Warning",
 	message: "You have whitelisted and non-whitelisted tabs open together. For optimal security, you should open non-whitelisted sites in an Incognito window.",
-	buttons: [{title: "Close non-whitelisted tabs"}, {title: "Okay, Thanks!"}],
+	buttons: [{title: "Okay, got it!"},{title: "Close non-whitelisted tabs"}],
 	iconUrl: "warning.png"
 }
 
@@ -175,7 +175,7 @@ function checkMixedStatus() {
 	    } else {
 	        console.log("No more mixed tabs");
 			
-			chrome.notifications.clear("mixedTabsWarning",function(wasCleared){
+			chrome.notifications.clear("mixedTabsWarning", function(wasCleared){
 				console.log("mixed tabs warning notification cleared");
 			});
 	    }
@@ -246,6 +246,31 @@ function onCreatedHandler(tab) {
 	}
 };
 
+function onNotifButtonHandler(nId, bId) {
+	if (nId == 'mixedTabsWarning') {
+		if (bId == 0) {
+			/* okay, thanks! */
+			chrome.notifications.clear(nId, function(wasCleared){
+				console.log("mixed tabs warning notification cleared");
+			});
+			
+		} else if (bId == 1) {
+			/* close black tabs */
+			
+			var toClose = new Array();
+			
+			for (var tabId in tabReg._list) {
+				if (tabReg._list[tabId] == 'black')
+					toClose.push(parseInt(tabId));
+			}
+
+			if (toClose.length > 0) {
+				chrome.tabs.remove(toClose, function(){});
+			}
+		}
+	}
+};
+
 function init() {
 	console.log("Starting extension");
 	
@@ -283,6 +308,14 @@ function init() {
 	chrome.tabs.onActivated.addListener(function(info){
 	    console.log("(" + info.tabId + ") now active");
         updateUI(info.tabId);
+	});
+	
+	// Notification events
+	chrome.notifications.onButtonClicked.addListener(onNotifButtonHandler);
+	chrome.notifications.onClicked.addListener(function(nId){
+		chrome.notifications.clear(nId, function(wasCleared){
+			console.log("mixed tabs warning notification cleared");
+		});
 	});
 }
 
