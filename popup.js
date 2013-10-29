@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
   chrome.extension.getBackgroundPage();
   
-  $('#injecthere').text("Opened at Y " + date.now());
+  $('#injecthere').text("Opened at " + Date.now());
   
 });
 
