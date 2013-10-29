@@ -1,0 +1,20 @@
+body {
+  font-family: 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
+  font-size: 12px;
+  cursor: default;
+  margin: 0;
+
+  min-width: 160px;
+}
+
+.button {
+    width : 100%;
+    text-align: center;
+    margin-top : 0.8em;
+    margin-bottom : 0.8em;
+}
+
+.button :hover { 
+    background-color: gray;
+}
+
