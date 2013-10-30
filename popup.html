@@ -2,19 +2,50 @@
 <html>
 <head>
   <title>Great Barrier</title>
-  <link rel="stylesheet" type="text/css" href="popup.css">
+  <link rel="stylesheet" type="text/css" href="popup.css"/>
   <script src="zepto.min.js"></script>
   <script src="popup.js"></script>
 </head>
 <body>
-<p>This site is on your whitelist</p>
-<p id="injecthere">Opened at XXX</p>
-<div class="button">
-    Remove from Whitelist
+
+<div class="pscreen" id="allwhite">
+  <ul>
+    <li class="status">This site () is on your whitelist</li>
+    <li class="ainfo">lorem ipsum</li>
+    <li class="button">Remove from Whitelist</li>
+    <li class="button">Open Great Barrier Options</li>
+  </ul>
 </div>
-<div class="button">
-    Open Great Barrier Options
+
+<div class="pscreen" id="allblack">
+  <ul>
+    <li class="status">This site () is <b>not</b> on your whitelist</li>
+    <li class="ainfo">lorem ipsum</li>
+    <li class="button">Add to Whitelist</li>
+    <li class="button">Open Great Barrier Options</li>
+  </ul>
 </div>
+
+<div class="pscreen" id="mixedwhite">
+  <ul>
+    <li class="status">You have mixed tabs open</li>
+    <li class="ainfo">This site () is on your whitelist, but other non-whitelisted tabs may have access to its data</li>
+    <li class="button">Remove from Whitelist</li>
+    <li class="button">Close non-whitelisted tabs</li>
+    <li class="button">Open Great Barrier Options</li>
+  </ul>
+</div>
+
+<div class="pscreen" id="mixedblack">
+  <ul>
+    <li class="status">You have mixed tabs open</li>
+    <li class="ainfo">This site () is not on your whitelist, and may be able to access data from other open tabs</li>
+    <li class="button">Add to Whitelist</li>
+    <li class="button">Close non-whitelisted tabs</li>
+    <li class="button">Open Great Barrier Options</li>
+  </ul>
+</div>
+
 </body>
 </html>
 

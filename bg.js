@@ -73,6 +73,8 @@ var tabReg = {
     'white' : 0,
     'black' : 0,
 	'unused' : 0,
+	
+	curActiveTabId : -2,
 };
 
 /*
@@ -307,6 +309,7 @@ function init() {
 	
 	chrome.tabs.onActivated.addListener(function(info){
 	    console.log("(" + info.tabId + ") now active");
+	    tabReg.curActiveTabId = info.tabId;
         updateUI(info.tabId);
 	});
 	
