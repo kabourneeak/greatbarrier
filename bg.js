@@ -95,8 +95,42 @@ function isOnWhitelist(url){
 };
 
 function rebuildRegistry() {
+
+	chrome.tabs.query({}, function(tabs){
+		console.log("rebuilding tab registry...");
 	
-}
+		for (var i = 0; i < tabs.length; ++i) {
+			tabReg.rem(tabs[i].id);
+			evalTab(tabs[i].id, tabs[i].url);
+		}
+		
+		console.log("rebuilding tab registry... complete");
+		
+		updateUI(tabReg.curActiveTabId);
+	});
+};
+
+function evalTab(tabId, url) {
+
+	if (isIgnorableUrl(url)) {
+		console.log("(" + tabId +  ") ignoring this tab (built-in, etc.)");
+
+	} else if (isNewTabUrl(url)) {
+        if (settings.protect_new) {
+            console.log("(" + tabId +  ") registering new tab as per user-preference");
+            tabReg.addWhite(tabId);
+        } else {
+            console.log("(" + tabId +  ") ignoring new tab as per user-preference");
+        }
+	
+	} else if (isOnWhitelist(url)) {
+	    tabReg.addWhite(tabId);
+		
+	} else {
+	    tabReg.addBlack(tabId);
+	}
+	
+};
 
 /*
  * Checks each page after loading to see if it should be given "white" status
@@ -104,18 +138,7 @@ function rebuildRegistry() {
 function onCompletedHandler(info) {
     console.log("(" + info.tabId +  ") onComplete: " + info.url);
 	
-    if (isNewTabUrl(info.url)) {
-        if (settings.protect_new) {
-            console.log("(" + info.tabId +  ") registering new tab as per user-preference");
-            tabReg.addWhite(info.tabId);
-        } else {
-            console.log("(" + info.tabId +  ") ignoring new tab as per user-preference");
-        }
-	} else if (isOnWhitelist(info.url)) {
-	    tabReg.addWhite(info.tabId);
-	} else {
-	    tabReg.addBlack(info.tabId);
-	}
+	evalTab(info.tabId, info.url);
 	
 	checkMixedStatus();
 	
@@ -157,8 +180,8 @@ function checkMixedStatus() {
 };
 
 function updateUI(tabId) {
-
-    // TODO:  update popup to be context sensitive
+	if (tabId < 0) 
+		return;
     
     if (tabReg.isMixed()) {
         if (tabReg.isBlack(tabId)) {
@@ -211,7 +234,7 @@ function onCreatedHandler(tab) {
         } else {
             console.log("(" + tab.id +  ") ignoring new tab as per user-preference");
         }
-    } else if (tab.url.indexOf("chrome") == 0) {
+    } else if (isIgnorableUrl(tab.url)) {
 		console.log("(" + tab.id +  ") ignoring built-in page " + tab.url);
 		
     } else if (tabReg.isWhite(tab.openerTabId)) {

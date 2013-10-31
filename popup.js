@@ -10,7 +10,10 @@ var data = {
 	curTabSite : "?",
 	curTabDomain : "?",
 	isBlack : false,
+	isWhite: false,
 	isMixed : false,
+	isIgnore : false,
+	isNewTabUrl : false,
 };
 
 function prepWhoops() {
@@ -171,7 +174,7 @@ function dispatch() {
 		}
 	} 
 	
-	if (data.isIgnore) {
+	if (data.isIgnore || data.isNewTabUrl) {
 		prepIgnorable();
 	} else if (data.isMixed) {
 		if (data.isBlack) {
@@ -212,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			data.curTabUrl = tab.url;
 			data.curTabSite = extractSiteFromUrl(tab.url);
 			data.isIgnore = isIgnorableUrl(tab.url);
+			data.isNewTabUrl = isNewTabUrl(tab.url);
 			dispatch();
 		});
 	}

@@ -90,9 +90,6 @@ function isNewTabUrl(url) {
 };
 
 function isIgnorableUrl(url) {
-	if (isNewTabUrl(url))
-		return true;
-		
 	if (url.indexOf("chrome") == 0)
 		return true;
 		
