@@ -1,5 +1,13 @@
 // bg.js - event page for Great Barrier
 
+// other settings being stored
+var popup_whoops = {
+	hasWhoops : false,
+	timestamp : 0,
+	action: "add",
+	site: "",
+};
+
 var tabReg = {
     addWhite : function(tabId){
 			if (tabId == -1) {
@@ -86,16 +94,8 @@ function isOnWhitelist(url){
 	return false;
 };
 
-var newTabUrls = ["chrome://newtab/", "/webhp?sourceid=chrome-instant"];
-
-function isNewTabUrl(url) {
-	for (var i = 0; i < newTabUrls.length; ++i){
-		if (url.indexOf(newTabUrls[i]) >= 0){
-			return true;
-		}
-	}
-			
-	return false;
+function rebuildRegistry() {
+	
 }
 
 /*
@@ -128,7 +128,7 @@ var notif = {
 	message: "You have whitelisted and non-whitelisted tabs open together. For optimal security, you should open non-whitelisted sites in an Incognito window.",
 	buttons: [{title: "Okay, got it!"},{title: "Close non-whitelisted tabs"}],
 	iconUrl: "warning.png"
-}
+};
 
 function checkMixedStatus() {
 
@@ -169,7 +169,7 @@ function updateUI(tabId) {
     } else {
         chrome.browserAction.setIcon({path: "icon_good.png"});
     }   
-}
+};
 
 function onBeforeRequestHandler(info) {
 
@@ -268,6 +268,8 @@ function init() {
 		for (key in changes) {
 			settings[key] = changes[key].newValue;
 		}
+		
+		rebuildRegistry();
 	});
 	
 	// Tab events
@@ -292,7 +294,7 @@ function init() {
 			console.log("mixed tabs warning notification cleared");
 		});
 	});
-}
+};
 
 /*
  * Application start-up here

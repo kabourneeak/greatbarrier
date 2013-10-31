@@ -9,11 +9,28 @@
 </head>
 <body>
 
+<div class="pscreen" id="whoops">
+  <ul>
+    <li class="status">You just <span class="txt" id="w_prev"></span></li>
+    <li class="ainfo">Did you not mean to do that?</li>
+    <li class="button" id="w_undo">I've changed my mind! <span class="txt" id="w_action"></span></li>
+    <li class="button" id="w_opt">Open Settings</li>
+  </ul>
+</div>
+
+<div class="pscreen" id="ignore_page">
+  <ul>
+    <li class="status">This page is not monitored.</li>
+    <li class="ainfo">This is a built-in page which is a part of Chrome.</li>
+    <li class="button" id="ip_opt">Open Settings</li>
+  </ul>
+</div>
+
 <div class="pscreen" id="allwhite">
   <ul>
     <li class="status">This site <span class="site" id="aw_site"></span> is on your whitelist</li>
-    <li class="ainfo">It is matched under the whitelist rule for <span class="site" id="aw_wlmatch"></span></li>
-    <li class="button" id="aw_rem">Remove <span class="site" id="aw_wlmatch2"></span> from Whitelist</li>
+    <li class="ainfo">It is matched under the whitelist rule for <span class="site" id="aw_wle"></span></li>
+    <li class="button" id="aw_rem">Remove <span class="site" id="aw_wle2"></span> from Whitelist</li>
     <li class="button" id="aw_opt">Open Settings</li>
   </ul>
 </div>
@@ -31,7 +48,7 @@
   <ul>
     <li class="status">You have mixed tabs open</li>
     <li class="ainfo">This site <span class="site" id="mw_site"></span> is on your whitelist, but other non-whitelisted tabs may have access to its data</li>
-    <li class="button" id="mw_rem">Remove <span class="site" id="mw_site2"></span> from Whitelist</li>
+    <li class="button" id="mw_rem">Remove <span class="site" id="mw_wle"></span> from Whitelist</li>
     <li class="button" id="mw_close">Close non-whitelisted tabs</li>
     <li class="button" id="mw_opt">Open Settings</li>
   </ul>

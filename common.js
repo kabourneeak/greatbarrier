@@ -10,6 +10,8 @@ var settings = {
     "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com")
 }
 
+var newTabUrls = ["chrome://newtab/", "/webhp?sourceid=chrome-instant"];
+
 /* 
  * Saves options to Synced Storage. 
  */
@@ -74,5 +76,25 @@ function getWhitelistEntry(site){
 			return wle;
 	}
 	
+	return false;
+};
+
+function isNewTabUrl(url) {
+	for (var i = 0; i < newTabUrls.length; ++i){
+		if (url.indexOf(newTabUrls[i]) >= 0){
+			return true;
+		}
+	}
+			
+	return false;
+};
+
+function isIgnorableUrl(url) {
+	if (isNewTabUrl(url))
+		return true;
+		
+	if (url.indexOf("chrome") == 0)
+		return true;
+		
 	return false;
 };
