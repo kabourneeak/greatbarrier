@@ -3,49 +3,49 @@
 <head>
   <title>Great Barrier</title>
   <link rel="stylesheet" type="text/css" href="popup.css"/>
-  <script src="zepto.min.js"></script>
-  <script src="popup.js"></script>
+  <script src="zepto.min.js" type="text/javascript"></script>
+  <script src="common.js" type="text/javascript"></script>
+  <script src="popup.js" type="text/javascript"></script>
 </head>
 <body>
 
 <div class="pscreen" id="allwhite">
   <ul>
-    <li class="status">This site () is on your whitelist</li>
-    <li class="ainfo">lorem ipsum</li>
-    <li class="button">Remove from Whitelist</li>
-    <li class="button">Open Great Barrier Options</li>
+    <li class="status">This site <span class="site" id="aw_site"></span> is on your whitelist</li>
+    <li class="ainfo">It is matched under the whitelist rule for <span class="site" id="aw_wlmatch"></span></li>
+    <li class="button" id="aw_rem">Remove <span class="site" id="aw_wlmatch2"></span> from Whitelist</li>
+    <li class="button" id="aw_opt">Open Settings</li>
   </ul>
 </div>
 
 <div class="pscreen" id="allblack">
   <ul>
-    <li class="status">This site () is <b>not</b> on your whitelist</li>
-    <li class="ainfo">lorem ipsum</li>
-    <li class="button">Add to Whitelist</li>
-    <li class="button">Open Great Barrier Options</li>
+    <li class="status">This site <span class="site" id="ab_site"></span> is <b>not</b> on your whitelist</li>
+    <li class="ainfo">You may wish to avoid opening any whitelisted sites until you have closed all non-whitelisted ones.</li>
+    <li class="button" id="ab_add">Add <span class="site" id="ab_site2"></span> to Whitelist</li>
+    <li class="button" id="ab_opt">Open Settings</li>
   </ul>
 </div>
 
 <div class="pscreen" id="mixedwhite">
   <ul>
     <li class="status">You have mixed tabs open</li>
-    <li class="ainfo">This site () is on your whitelist, but other non-whitelisted tabs may have access to its data</li>
-    <li class="button">Remove from Whitelist</li>
-    <li class="button">Close non-whitelisted tabs</li>
-    <li class="button">Open Great Barrier Options</li>
+    <li class="ainfo">This site <span class="site" id="mw_site"></span> is on your whitelist, but other non-whitelisted tabs may have access to its data</li>
+    <li class="button" id="mw_rem">Remove <span class="site" id="mw_site2"></span> from Whitelist</li>
+    <li class="button" id="mw_close">Close non-whitelisted tabs</li>
+    <li class="button" id="mw_opt">Open Settings</li>
   </ul>
 </div>
 
 <div class="pscreen" id="mixedblack">
   <ul>
     <li class="status">You have mixed tabs open</li>
-    <li class="ainfo">This site () is not on your whitelist, and may be able to access data from other open tabs</li>
-    <li class="button">Add to Whitelist</li>
-    <li class="button">Close non-whitelisted tabs</li>
-    <li class="button">Open Great Barrier Options</li>
+    <li class="ainfo">This site <span class="site" id="mb_site"></span> is not on your whitelist, and may be able to access data from other open tabs</li>
+    <li class="button" id="mb_add">Add <span class="site" id="mb_site2"></span> to Whitelist</li>
+    <li class="button" id="mb_close">Close non-whitelisted tabs</li>
+    <li class="button" id="mb_opt">Open Settings</li>
   </ul>
 </div>
 
 </body>
 </html>
-

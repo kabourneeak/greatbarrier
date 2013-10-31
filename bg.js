@@ -1,11 +1,5 @@
 // bg.js - event page for Great Barrier
 
-var settings = {
-    "protect_new" : true,
-    "warn_mixed" : true,
-    "wl" : new Array("en.wikipedia.org", "google.ca")
-}
-
 var tabReg = {
     addWhite : function(tabId){
 			if (tabId == -1) {
@@ -77,37 +71,15 @@ var tabReg = {
 	curActiveTabId : -2,
 };
 
-/*
- * Loads any synced settings or creates defaults
- */
-function loadSettings() {
-
-    chrome.storage.local.get(null, function(res) {
-        
-        if (res.timestamp) {
-            settings = res;
-        } else {
-            // no settings object found, so leave settings as default
-            console.log("No sync'd settings found; using defaults");
-        }
-    });
-};
-
 function isOnWhitelist(url){
 
-    if (url.indexOf("http://") == 0) {
-        url = url.replace("http://", "");
-    } else if (url.indexOf("https://") == 0) {
-        url = url.replace("https://", "");
-    }
-
-    var firstSlash = url.indexOf("/");
-
+	url = extractSiteFromUrl(url);
+	
 	for (var i = 0; i < settings.wl.length; ++i) {
 	    var wle = settings.wl[i];
 		var iof = url.indexOf(wle);
 	    
-		if ((iof >= 0) && (iof + wle.length <= firstSlash))
+		if ((iof >= 0) && (iof + wle.length == url.length))
 			return true;
 	}
 	

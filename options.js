@@ -1,25 +1,4 @@
 
-var settings = {
-    "protect_new" : true,
-    "warn_mixed" : true,
-    "wl" : new Array("en.wikipedia.org", "google.ca")
-}
-
-
-/* 
- * Saves options to  Synced Storage. 
- */
-function saveSettings() {
-
-    /* update settings object */
-    settings.timestamp = Date.now();
-    
-    /* save */
-    chrome.storage.local.set(settings, function(){
-        console.log("Settings saved: " + settings.timestamp);
-    });
-};
-
 /*
  * Loads any synced settings or creates defaults
  */
@@ -128,22 +107,7 @@ function addNewWlEntry() {
     } 
    
     /* validate and massage value */
-
-    url = url.toLowerCase();
-
-	// get rid of protocol
-    if (url.indexOf('http://') == 0) {
-        url = url.replace("http://", "");
-    } else if (url.indexOf('https://') == 0) {
-        url = url.replace("https://", "");
-    } else {
-        // do nothing
-    }
-
-	// get rid of page spec
-	var firstSlash = url.indexOf("/");
-	if (firstSlash > -1)
-		url = url.substring(0, firstSlash);
+	url = extractSiteFromUrl(url);
 	
     // check for duplicates
     if (settings.wl.indexOf(url) != -1) {
@@ -151,7 +115,6 @@ function addNewWlEntry() {
     }
 
     /* add to settings */
-
     settings.wl.push(url);
     settings.wl.sort();
     
