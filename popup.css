@@ -4,7 +4,7 @@ body {
   cursor: default;
   margin: 0.8em;
 
-  min-width: 160px;
+  min-width: 260px;
 }
 
 .pscreen {
@@ -17,11 +17,22 @@ body {
     padding : 0;
     list-style: none;
     list-style-type: none;
+    border-bottom: 1px solid gray;
+    
 }
 
 .status {
     margin-top: 0.5em;
 	text-align: center;
+	height: 3.0em;
+	vertical-align: middle;
+	/*background: -webkit-linear-gradient(left,  #ffffff 0%,#d8deea 25%,#d8deea 75%,#ffffff 100%); */
+}
+
+.status img {
+	width: 3.0em;
+	height: 3.0em;
+	float: left;
 }
 
 .status .site {
@@ -31,8 +42,9 @@ body {
 }
 
 .ainfo {
-    margin-top: 0.5em;
+    padding-top: 1.0em;
     color: gray;
+    padding-bottom: 1.0em;
 }
 
 .button {
@@ -40,10 +52,12 @@ body {
     text-align: center;
     padding-top : 0.8em;
     padding-bottom : 0.8em;
+    border-top: 1px solid gray;
+    background-color: #D8DEEA;
 }
 
 .button:hover { 
-    background-color: gray;
+    background-color: #8F94A0;
 }
 
 .button .site {

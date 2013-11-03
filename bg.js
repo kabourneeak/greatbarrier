@@ -99,14 +99,18 @@ function rebuildRegistry() {
 	chrome.tabs.query({}, function(tabs){
 		console.log("rebuilding tab registry...");
 	
+		// re-evaluate every tab
 		for (var i = 0; i < tabs.length; ++i) {
 			tabReg.rem(tabs[i].id);
 			evalTab(tabs[i].id, tabs[i].url);
 		}
+
+		// update context-sensitive UI bits
+		for (var i = 0; i < tabs.length; ++i) {
+			updateUI(tabs[i].id);
+		}
 		
 		console.log("rebuilding tab registry... complete");
-		
-		updateUI(tabReg.curActiveTabId);
 	});
 };
 
@@ -185,12 +189,12 @@ function updateUI(tabId) {
     
     if (tabReg.isMixed()) {
         if (tabReg.isBlack(tabId)) {
-            chrome.browserAction.setIcon({path: "icon_mixed_b.png"});
+            chrome.browserAction.setIcon({'path': "icon_mixed_b.png", 'tabId': tabId});
         } else {
-            chrome.browserAction.setIcon({path: "icon_mixed_w.png"});
+            chrome.browserAction.setIcon({'path': "icon_mixed_w.png", 'tabId': tabId});
         }
     } else {
-        chrome.browserAction.setIcon({path: "icon_good.png"});
+        chrome.browserAction.setIcon({'path': "icon_good.png", 'tabId': tabId});
     }   
 };
 
@@ -308,6 +312,21 @@ function init() {
 	    console.log("(" + info.tabId + ") now active");
 	    tabReg.curActiveTabId = info.tabId;
         updateUI(info.tabId);
+	});
+	
+	chrome.windows.onFocusChanged.addListener(function(wid){
+		if (wid != chrome.windows.WINDOW_ID_NONE) {
+			// TODO figure out currently active tab
+			console.log("Window " + wid + " is now has focus.");
+			
+			chrome.tabs.query({'active': true, 'currentWindow': true}, function(tabs) {
+			    tabReg.curActiveTabId = tabs[0].id;
+				updateUI(tabs[0].id);
+			});
+		} else {
+			console.log("All windows have lost focus.");
+		}
+		
 	});
 	
 	// Notification events

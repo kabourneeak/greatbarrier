@@ -197,6 +197,10 @@ function dispatch() {
  */
 document.addEventListener('DOMContentLoaded', function () {
 
+	// set up basic events
+	$('.status').on('click', function(e){window.close()});
+	$('.ainfo').on('click', function(e){window.close()});
+
 	// collect asynchronous data
 	settings = chrome.extension.getBackgroundPage().settings;
 	data.tabReg = chrome.extension.getBackgroundPage().tabReg;
