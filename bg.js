@@ -117,15 +117,11 @@ function rebuildRegistry() {
 function evalTab(tabId, url) {
 
 	if (isIgnorableUrl(url)) {
+	    tabReg.rem(tabId);
 		console.log("(" + tabId +  ") ignoring this tab (built-in, etc.)");
 
 	} else if (isNewTabUrl(url)) {
-        if (settings.protect_new) {
-            console.log("(" + tabId +  ") registering new tab as per user-preference");
-            tabReg.addWhite(tabId);
-        } else {
-            console.log("(" + tabId +  ") ignoring new tab as per user-preference");
-        }
+	    tabReg.addUnused(tabId);
 	
 	} else if (isOnWhitelist(url)) {
 	    tabReg.addWhite(tabId);
@@ -200,7 +196,10 @@ function updateUI(tabId) {
 
 function onBeforeRequestHandler(info) {
 
-	if (tabReg.isWhite(info.tabId) || tabReg.isUnused(info.tabId)) {
+    var intercede = tabReg.isWhite(info.tabId)
+                    ||  (tabReg.isUnused(info.tabId) && settings.protect_new);
+
+	if (intercede) {
 		if (isOnWhitelist(info.url)) {
 			// 	.. allow nav to proceed unhindered
 			return {cancel : false}
@@ -231,20 +230,18 @@ function onBeforeRequestHandler(info) {
 };
 
 function onCreatedHandler(tab) {
+    
     if (isNewTabUrl(tab.url)) {
-        if (settings.protect_new) {
-            console.log("(" + tab.id +  ") registering new tab as per user-preference");
-            tabReg.addWhite(tab.id);
-        } else {
-            console.log("(" + tab.id +  ") ignoring new tab as per user-preference");
-        }
+        tabReg.addUnused(tab.id);
+        console.log("(" + tab.id +  ") registered blank tab as 'unused'");
+        
     } else if (isIgnorableUrl(tab.url)) {
 		console.log("(" + tab.id +  ") ignoring built-in page " + tab.url);
 		
-    } else if (tabReg.isWhite(tab.openerTabId)) {
-		console.log("(" + tab.id +  ") registering tab opened by " + tab.openerTabId + " at " + tab.url);
-		tabReg.addUnused(tab.id);
-	}
+    } else {
+        tabReg.addUnused(tab.id);
+        console.log("(" + tab.id +  ") registered as 'unused'");
+    }   
 };
 
 function onNotifButtonHandler(nId, bId) {
@@ -316,17 +313,13 @@ function init() {
 	
 	chrome.windows.onFocusChanged.addListener(function(wid){
 		if (wid != chrome.windows.WINDOW_ID_NONE) {
-			// TODO figure out currently active tab
 			console.log("Window " + wid + " is now has focus.");
 			
 			chrome.tabs.query({'active': true, 'currentWindow': true}, function(tabs) {
 			    tabReg.curActiveTabId = tabs[0].id;
 				updateUI(tabs[0].id);
 			});
-		} else {
-			console.log("All windows have lost focus.");
 		}
-		
 	});
 	
 	// Notification events
