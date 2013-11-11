@@ -303,7 +303,7 @@ function init() {
 	chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
 	    tabReg.rem(tabId);
 	    checkMixedStatus();
-	    updateUI();
+	    // no need to updateUI since tab is gone!
 	});
 	
 	chrome.tabs.onCreated.addListener(onCreatedHandler);
