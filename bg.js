@@ -55,6 +55,10 @@ var tabReg = {
             
             return false;
         },
+        
+    isRegistered : function(tabId){
+            return this._list.hasOwnProperty(tabId);
+        },
     
     rem : function(tabId){
             if (this._list.hasOwnProperty(tabId)) {
@@ -116,13 +120,13 @@ function rebuildRegistry() {
 
 function evalTab(tabId, url) {
 
-	if (isIgnorableUrl(url)) {
+    if (isNewTabUrl(url)) {
+	    tabReg.addUnused(tabId);
+
+	} else if (isIgnorableUrl(url)) {
 	    tabReg.rem(tabId);
 		console.log("(" + tabId +  ") ignoring this tab (built-in, etc.)");
 
-	} else if (isNewTabUrl(url)) {
-	    tabReg.addUnused(tabId);
-	
 	} else if (isOnWhitelist(url)) {
 	    tabReg.addWhite(tabId);
 		
@@ -172,9 +176,9 @@ function checkMixedStatus() {
 	    } else {
 	        console.log("No more mixed tabs");
 			
-			chrome.notifications.clear("mixedTabsWarning", function(wasCleared){
-				console.log("mixed tabs warning notification cleared");
-			});
+		    chrome.notifications.clear("mixedTabsWarning", function(wasCleared){
+			    console.log("mixed tabs warning notification cleared");
+		    });
 	    }
 	}
 };
@@ -196,6 +200,12 @@ function updateUI(tabId) {
 
 function onBeforeRequestHandler(info) {
 
+    // check if this is a new tab (sometimes the onCreated event fires late)
+    if (!(tabReg.isRegistered(info.tabId)))
+        if (!isIgnorableUrl(info.url))
+       	    tabReg.addUnused(info.tabId);
+
+    // see if this tab qualifies for protection
     var intercede = tabReg.isWhite(info.tabId)
                     ||  (tabReg.isUnused(info.tabId) && settings.protect_new);
 
@@ -313,8 +323,6 @@ function init() {
 	
 	chrome.windows.onFocusChanged.addListener(function(wid){
 		if (wid != chrome.windows.WINDOW_ID_NONE) {
-			console.log("Window " + wid + " is now has focus.");
-			
 			chrome.tabs.query({'active': true, 'currentWindow': true}, function(tabs) {
 			    tabReg.curActiveTabId = tabs[0].id;
 				updateUI(tabs[0].id);
@@ -322,13 +330,16 @@ function init() {
 		}
 	});
 	
+	// capture any open tabs
+	rebuildRegistry();
+
 	// Notification events
-	chrome.notifications.onButtonClicked.addListener(onNotifButtonHandler);
-	chrome.notifications.onClicked.addListener(function(nId){
-		chrome.notifications.clear(nId, function(wasCleared){
-			console.log("mixed tabs warning notification cleared");
-		});
-	});
+    chrome.notifications.onButtonClicked.addListener(onNotifButtonHandler);
+    chrome.notifications.onClicked.addListener(function(nId){
+	    chrome.notifications.clear(nId, function(wasCleared){
+		    console.log("mixed tabs warning notification cleared");
+	    });
+    });
 };
 
 /*
