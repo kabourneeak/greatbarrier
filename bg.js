@@ -150,7 +150,7 @@ var notif = {
 	title: "Mixed Tabs Warning",
 	message: "You have whitelisted and non-whitelisted tabs open together. For optimal security, you should open non-whitelisted sites in an Incognito window.",
 	buttons: [{title: "Okay, got it!"},{title: "Close non-whitelisted tabs"}],
-	iconUrl: "warning.png"
+	iconUrl: "icon_gate_warning_128px.png"
 };
 
 function checkMixedStatus() {
@@ -185,12 +185,12 @@ function updateUI(tabId) {
     
     if (tabReg.isMixed()) {
         if (tabReg.isBlack(tabId)) {
-            chrome.browserAction.setIcon({'path': "icon_mixed_b.png", 'tabId': tabId});
+            chrome.browserAction.setIcon({'path': "icon_gate_x_19px.png", 'tabId': tabId});
         } else {
-            chrome.browserAction.setIcon({'path': "icon_mixed_w.png", 'tabId': tabId});
+            chrome.browserAction.setIcon({'path': "icon_gate_warn_19px.png", 'tabId': tabId});
         }
     } else {
-        chrome.browserAction.setIcon({'path': "icon_good.png", 'tabId': tabId});
+        chrome.browserAction.setIcon({'path': "icon_gate_aok_19px.png", 'tabId': tabId});
     }   
 };
 
