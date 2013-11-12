@@ -176,6 +176,9 @@ function checkMixedStatus() {
 	if (curMixedState != tabReg.lastMixedState) {
         tabReg.lastMixedState = curMixedState;
         
+	    // update current tab with relevant icon
+	    updateUI(tabReg.curActiveTabId);
+
 	    if (tabReg.isMixed()) {
 	        console.log("Mixed tabs now exist");
 			
