@@ -5,7 +5,7 @@
 
  
 var settings = {
-    "protect_new" : true,
+    "protect_new" : false,
     "warn_mixed" : true,
     "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com")
 }
