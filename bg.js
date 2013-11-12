@@ -166,7 +166,7 @@ var notif = {
 	title: "Mixed Tabs Warning",
 	message: "You have whitelisted and non-whitelisted tabs open together. For optimal security, you should open non-whitelisted sites in an Incognito window.",
 	buttons: [{title: "Okay, got it!"},{title: "Close non-whitelisted tabs"}],
-	iconUrl: "icon_gate_warning_128px.png"
+	iconUrl: "icon_gate_warn_128px.png"
 };
 
 function checkMixedStatus() {
