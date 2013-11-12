@@ -1,10 +1,13 @@
 {
   "manifest_version": 2,
   "name": "Great Barrier",
-  "version": "0.1",
+  "short_name" : "Great Barrier",
+  "version": "0.9",
 
-  "description": "This extension lets you maintain a whitelist pages you normally like to browse in isolation. Any links within those pages to non-whitelisted pages (e.g., links from email messages or forum posts) will open in an Incognito window",
+  "description": "Helps you keep your trusted sites away from the rest by redirecting links (i.e., from email) to Incognito windows.",
   "icons" : {
+    "16": "icon_gate_aok_16px.png",
+    "48": "icon_gate_aok_48px.png",
     "128": "icon_gate_aok_128px.png"
   },
 

@@ -1,0 +1,15 @@
+Have you ever followed a link from an email without thinking about it, only to be brought to a site full of ads and other nonsense which you would rather not have anywhere near your trusted sites?  If this sounds like something that bothers you, then this extension is what you've been looking for.
+
+Great Barrier lets you maintain a whitelist of sites which you trust and/or use on a regular basis. If you follow a link to a non-whitelisted site, Great Barrier will redirect it to an Incognito window instead, isolating it from any sensitive sessions you may have open.
+
+****
+
+This extension is open-source and is freely available by following the Website Link from the Chrome Web Store. This extension does not record, store or transmit any personal information or browsing history information. Your settings may be syncronized with Google's servers but are not accessible to the authors of this extension.
+
+Great Barrier was created by Gregory Bint and Gehana Booth of Carleton University, Canada, as part of a usable security project (you may be getting a sense of where the name came from, right about now). The project was motivated by the authors' interest in "Separated Browsing", a mindset which aims to keep advertising and other tracking technologies from interacting with sensitive personal information. The lovely artwork was provided by Rachel Robertson.
+
+Often, separated browsing is accomplished by simply using more than one browser; one for sensitive sites, and another for general browsing. However, even for a motivated individual, this separation can easily be foiled by something as simple as following a link from an email message when in a hurry or when otherwise
+distracted. This extension aims to provide for seamless, automatic separation of web browsing, while reducing or eliminating the need for the user to be constantly thoughtful of where each link is headed.
+
+If you have any questions or feedback about this extension, separated browsing in general, or would like to contribute to our study, please contact us at greatbarrier@scs.carleton.ca or greatbarrierx@gmail.com
+
