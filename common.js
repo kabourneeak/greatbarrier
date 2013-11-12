@@ -29,7 +29,7 @@ function saveSettings() {
 /*
  * Loads any synced settings or creates defaults
  */
-function loadSettings() {
+function loadSettings(callback) {
 
     chrome.storage.local.get(null, function(res) {
         
@@ -39,6 +39,9 @@ function loadSettings() {
             // no settings object found, so leave settings as default
             console.log("No saved settings found; using defaults");
         }
+        
+        if (typeof(callback) !== 'undefined')
+            callback();
     });
 };
 

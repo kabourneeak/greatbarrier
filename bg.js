@@ -282,9 +282,6 @@ function onNotifButtonHandler(nId, bId) {
 function init() {
 	console.log("Starting extension");
 	
-	/* load settings */
-	loadSettings();
-	
 	/* hook events */
 	
 	// Page-watching events
@@ -330,9 +327,9 @@ function init() {
 		}
 	});
 	
-	// capture any open tabs
-	rebuildRegistry();
-
+	/* load settings */
+	loadSettings(function(){rebuildRegistry();});
+	
 	// Notification events
     chrome.notifications.onButtonClicked.addListener(onNotifButtonHandler);
     chrome.notifications.onClicked.addListener(function(nId){
