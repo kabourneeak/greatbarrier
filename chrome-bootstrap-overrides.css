@@ -1,3 +1,15 @@
+.chrome-bootstrap .frame .content {
+  width: auto;
+  max-width: 738px;
+  margin-right: 12px;
+  overflow-x: hidden;
+}
+
+.chrome-bootstrap header {
+  width: auto;
+  margin-right: 12px;
+  max-width: 738px;
+}
 
 .chrome-bootstrap .checkbox span {
   font-weight: bold;
