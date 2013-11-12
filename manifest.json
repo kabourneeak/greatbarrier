@@ -9,7 +9,7 @@
   },
 
   "browser_action": {
-    "default_icon": "icon_gate_aok_19px.png",
+    "default_icon": "icon_gate_questionmark_19px.png",
     "default_title" : "Great Barrier",
     "default_popup": "popup.html"
   },

@@ -26,6 +26,10 @@ var tabReg = {
 			this.add(tabId, 'unused');
 		},
 		
+	addProtectedUnused : function(tabId) {
+			this.add(tabId, 'protected');
+	    },
+		
 	add : function(tabId, type) {
             if (this._list.hasOwnProperty(tabId))
 				this[this._list[tabId]] -= 1;
@@ -55,6 +59,13 @@ var tabReg = {
             
             return false;
         },
+
+	isProtectedUnused : function(tabId){
+            if (this._list.hasOwnProperty(tabId))
+                return this._list[tabId] == 'protected';
+            
+            return false;
+        },
         
     isRegistered : function(tabId){
             return this._list.hasOwnProperty(tabId);
@@ -79,6 +90,7 @@ var tabReg = {
     'white' : 0,
     'black' : 0,
 	'unused' : 0,
+	'protected' : 0,
 	
 	curActiveTabId : -2,
 };
@@ -207,7 +219,8 @@ function onBeforeRequestHandler(info) {
 
     // see if this tab qualifies for protection
     var intercede = tabReg.isWhite(info.tabId)
-                    ||  (tabReg.isUnused(info.tabId) && settings.protect_new);
+                    || (tabReg.isProtectedUnused(info.tabId))
+                    || (tabReg.isUnused(info.tabId) && settings.protect_new);
 
 	if (intercede) {
 		if (isOnWhitelist(info.url)) {
@@ -220,7 +233,7 @@ function onBeforeRequestHandler(info) {
 			
 			chrome.windows.create({url: info.url, incognito: true});
 
-			if (tabReg.isUnused(info.tabId)) {
+			if (tabReg.isUnused(info.tabId) || tabReg.isProtectedUnused(info.tabId)) {
 				// This tab has never had an onCompleted event, then it is 
 				// probably safe to close it.
 				window.setTimeout(function(){chrome.tabs.remove(info.tabId)}, 200);
@@ -247,6 +260,10 @@ function onCreatedHandler(tab) {
         
     } else if (isIgnorableUrl(tab.url)) {
 		console.log("(" + tab.id +  ") ignoring built-in page " + tab.url);
+
+    } else if (tabReg.isWhite(tab.openerTabId)) {
+       console.log("(" + tab.id +  ") registering tab opened by " + tab.openerTabId + " at " + tab.url);
+       tabReg.addProtectedUnused(tab.id);
 		
     } else {
         tabReg.addUnused(tab.id);
@@ -311,6 +328,9 @@ function init() {
 	});
 	
 	chrome.tabs.onCreated.addListener(onCreatedHandler);
+	chrome.tabs.onUpdated.addListener(function(tabId, chg, tab) {
+	    updateUI(tabId)
+	});
 	
 	chrome.tabs.onActivated.addListener(function(info){
 	    console.log("(" + info.tabId + ") now active");
