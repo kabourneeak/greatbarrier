@@ -16,6 +16,19 @@ var data = {
 	isNewTabUrl : false,
 };
 
+function prepRedirect() {
+    $('#redirect').css('display', 'block');
+
+	$('#r_site').text(data.redirect.site);
+	$('#r_site2').text(data.redirect.site);
+
+	$('#r_add')[0].addEventListener('click', function() {
+		modifyWhiteList("add", data.redirect.site, false);
+	});
+
+    $('#r_opt')[0].addEventListener('click', openOptions);
+};
+
 function prepWhoops() {
     $('#whoops').css('display', 'block');
 	
@@ -164,6 +177,17 @@ function modifyWhiteList(action, site, createUndo) {
 };
 
 function dispatch() {
+
+	if (data.redirect.hasRedirect) {
+		if (data.redirect.timestamp >= (Date.now() - 10000)) {
+			prepRedirect();
+			return;
+		} else {
+			data.whoops.hasRedirect = false;
+			chrome.extension.getBackgroundPage().popup_redirect = data.redirect;
+		}
+	} 
+
 	if (data.whoops.hasWhoops) {
 		if (data.whoops.timestamp >= (Date.now() - 10000)) {
 			prepWhoops();
@@ -205,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	settings = chrome.extension.getBackgroundPage().settings;
 	data.tabReg = chrome.extension.getBackgroundPage().tabReg;
 	data.whoops = chrome.extension.getBackgroundPage().popup_whoops;
+	data.redirect = chrome.extension.getBackgroundPage().popup_redirect;
 	data.curTabId = data.tabReg.curActiveTabId;
 	data.isBlack = data.tabReg.isBlack(data.curTabId);
 	data.isWhite = data.tabReg.isWhite(data.curTabId);

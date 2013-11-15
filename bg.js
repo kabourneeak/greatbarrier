@@ -8,6 +8,12 @@ var popup_whoops = {
 	site: "",
 };
 
+var popup_redirect = {
+	hasRedirect : false,
+	timestamp : 0,
+	site: "",
+}
+
 var tabReg = {
     addWhite : function(tabId){
 			if (tabId == -1) {
@@ -241,6 +247,13 @@ function onBeforeRequestHandler(info) {
 				// probably safe to close it.
 				window.setTimeout(function(){chrome.tabs.remove(info.tabId)}, 200);
 			}
+			
+			// record redirect for user popup action
+			popup_redirect = {
+	            hasRedirect : true,
+	            timestamp : Date.now(),
+	            site: extractSiteFromUrl(info.url),
+			};
 
 			// ultimate hack right here: stop the navigation on the original
 			// tab without chrome putting up an error screen
