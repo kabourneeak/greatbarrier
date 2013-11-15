@@ -7,7 +7,7 @@
 var settings = {
     "protect_new" : false,
     "warn_mixed" : true,
-    "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com")
+    "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com", "googleusercontent.com")
 }
 
 var newTabUrls = ["chrome://newtab/", "/webhp?sourceid=chrome-instant"];
