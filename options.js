@@ -213,5 +213,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 window.onfocus = function() {
 	// re-evaluate things after returning to window
+    initSettings();
     initIntrospection();
 };
