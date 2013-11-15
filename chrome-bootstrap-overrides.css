@@ -40,3 +40,12 @@
 #ip_on {
   display: none;
 }
+
+.chrome-bootstrap .status_icon {
+  float: left;
+}
+
+.chrome-bootstrap .status_icon + p {
+  margin-left: 24px;
+}
+
