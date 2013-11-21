@@ -50,9 +50,9 @@ function extractSiteFromUrl(url) {
     if (url == "")
         return;
 
-	url = url.toLowerCase();
+    url = url.toLowerCase();
 
-	// get rid of protocol
+    // get rid of protocol
     if (url.indexOf('http://') == 0) {
         url = url.replace("http://", "");
     } else if (url.indexOf('https://') == 0) {
@@ -61,40 +61,40 @@ function extractSiteFromUrl(url) {
         // do nothing
     }
 
-	// get rid of page spec
-	var firstSlash = url.indexOf("/");
-	if (firstSlash > -1)
-		url = url.substring(0, firstSlash);
+    // get rid of page spec
+    var firstSlash = url.indexOf("/");
+    if (firstSlash > -1)
+        url = url.substring(0, firstSlash);
 
-	return url;
+    return url;
 };
 
 function getWhitelistEntry(site){
 
-	for (var i = 0; i < settings.wl.length; ++i) {
-	    var wle = settings.wl[i];
-		var iof = site.indexOf(wle);
-	    
-		if ((iof >= 0) && (iof + wle.length == site.length))
-			return wle;
-	}
-	
-	return false;
+    for (var i = 0; i < settings.wl.length; ++i) {
+        var wle = settings.wl[i];
+        var iof = site.indexOf(wle);
+        
+        if ((iof >= 0) && (iof + wle.length == site.length))
+            return wle;
+    }
+    
+    return false;
 };
 
 function isNewTabUrl(url) {
-	for (var i = 0; i < newTabUrls.length; ++i){
-		if (url.indexOf(newTabUrls[i]) >= 0){
-			return true;
-		}
-	}
-			
-	return false;
+    for (var i = 0; i < newTabUrls.length; ++i){
+        if (url.indexOf(newTabUrls[i]) >= 0){
+            return true;
+        }
+    }
+            
+    return false;
 };
 
 function isIgnorableUrl(url) {
-	if (url.indexOf("chrome") == 0)
-		return true;
-		
-	return false;
+    if (url.indexOf("chrome") == 0)
+        return true;
+        
+    return false;
 };

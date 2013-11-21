@@ -107,8 +107,8 @@ function addNewWlEntry() {
     } 
    
     /* validate and massage value */
-	url = extractSiteFromUrl(url);
-	
+    url = extractSiteFromUrl(url);
+    
     // check for duplicates
     if (settings.wl.indexOf(url) != -1) {
         return;
@@ -192,12 +192,12 @@ function initIntrospection() {
     
     chrome.extension.isAllowedIncognitoAccess(function(res){
         if (res) {
-			$("#ip_off").css({'display': 'none'});
-			$("#ip_on").css({'display': 'block'});
+            $("#ip_off").css({'display': 'none'});
+            $("#ip_on").css({'display': 'block'});
         }
         else {
-			$("#ip_on").css({'display': 'none'});
-			$("#ip_off").css({'display': 'block'});
+            $("#ip_on").css({'display': 'none'});
+            $("#ip_off").css({'display': 'block'});
         }
     });
 
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 window.onfocus = function() {
-	// re-evaluate things after returning to window
+    // re-evaluate things after returning to window
     initSettings();
     initIntrospection();
 };
