@@ -10,7 +10,9 @@ var settings = {
     "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com", "googleusercontent.com")
 }
 
-var newTabUrls = ["chrome://newtab/", "/webhp?sourceid=chrome-instant"];
+var newTabUrls = ["chrome://newtab/",
+	"/webhp?sourceid=chrome-instant",
+	"/_/chrome/newtab"];
 
 /* 
  * Saves options to Synced Storage. 
