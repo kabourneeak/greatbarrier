@@ -7,6 +7,7 @@
 var settings = {
     "protect_new" : false,
     "warn_mixed" : true,
+	"save_history" : false,
     "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com", "googleusercontent.com")
 }
 

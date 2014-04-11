@@ -53,6 +53,17 @@
 					cause an Incognito window to open if you are at a new tab 
 					and type a URL to a non-whitelisted site.</p>
 			    </div>
+			    <div class="checkbox">
+				    <input type="checkbox" id="save_history"> 
+					<span>Add Redirected Links to Browser History</span>
+					<p>When enabled, Redirected links will be added to your
+					browser history, which can be helpful if you rely on history 
+					auto-complete for navigation. <i>Note: because redirected links 
+					are opened Incognito, only the initial, redirected link can be
+					added to your history; all other navigation in the Incogito window
+					is hidden from the extension, and will be discarded by Chrome as usual.</i>
+					</p>
+			    </div>
 			    </section>
 
 			    <h3>Incognito Permission</h3>
@@ -60,11 +71,11 @@
 				
 				<div id="ip_off">
 				<img src="icon_aok_19px.png" class="status_icon">
-				<p>&quot;Allow in Incognito&quot; is disabled for this extension. Perfect!</p>
+				<p>&quot;Allow in Incognito&quot; permission is <i>disabled</i> for this extension. Perfect!</p>
 				</div>
 				<div id="ip_on">
 				<img src="icon_x_19px.png" class="status_icon">
-				<p>&quot;Allow in Incognito&quot; is enabled for this extension.  
+				<p>&quot;Allow in Incognito&quot; permission is enabled for this extension.  
 				You should disable this setting as it is not needed, and it is 
 				always wise to be conservative with the permissions you	grant to
 				your installed software.</p>

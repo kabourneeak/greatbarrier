@@ -25,6 +25,7 @@ function applySettings() {
 
     $("#warn_mixed").prop("checked", settings.warn_mixed);
     $("#protect_new").prop("checked", settings.protect_new);
+    $("#save_history").prop("checked", settings.save_history);
 
     // write out whitelist
     createWlUI();
@@ -134,6 +135,11 @@ function initEvents() {
 
     $('#warn_mixed')[0].addEventListener('change', function() {
         settings.warn_mixed = $('#warn_mixed').prop("checked");
+        saveSettings();
+    });
+
+    $('#save_history')[0].addEventListener('change', function() {
+        settings.save_history = $('#save_history').prop("checked");
         saveSettings();
     });
     

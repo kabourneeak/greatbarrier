@@ -240,6 +240,10 @@ function onBeforeRequestHandler(info) {
             
             console.log("(" + info.tabId +  ") Redirecting non-whitelist entry to " + info.url);
             
+			if (settings.save_history) {
+				chrome.history.addUrl({url : info.url});
+			}
+			
             chrome.windows.create({url: info.url, incognito: true});
 
             if (tabReg.isUnused(info.tabId) || tabReg.isProtectedUnused(info.tabId)) {

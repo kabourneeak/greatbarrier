@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Great Barrier",
   "short_name" : "Great Barrier",
-  "version": "0.93.1",
+  "version": "0.94",
 
   "description": "Helps you keep your trusted sites away from the rest by redirecting links (i.e., from email) to Incognito windows.",
   "icons" : {
@@ -28,6 +28,7 @@
 	"notifications",
 	"storage",
 	"tabs",
+	"history",
 	"webRequest", "webRequestBlocking",
     "http://*/*", "https://*/*"
   ]
