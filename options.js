@@ -137,10 +137,6 @@ function initEvents() {
         saveSettings();
     });
     
-    $('#hp_addtowl')[0].addEventListener('click', function() {
-
-    });
-    
     $('#new_wl')[0].addEventListener('keyup', function(e) {
       if (e.keyCode == 13) {
         addNewWlEntry();
