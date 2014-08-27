@@ -4,15 +4,18 @@
  */
 function initSettings() {
 
-	loadSettings(function() {
-		if (lo_settings.auto_sync === true)
-			loadSettingsSync(function() {
-				applySettings();
-			});
-		else {
-			applySettings();
-		}
-	});
+    chrome.storage.local.get(null, function(res) {
+        
+        if (res.timestamp) {
+            settings = res;
+        }
+        else {
+            // no settings object found, so leave settings as default
+            console.log("No sync'd settings found; using defaults");
+        }
+        
+        applySettings();
+    });
 };
 
 /*
@@ -23,7 +26,6 @@ function applySettings() {
     $("#warn_mixed").prop("checked", settings.warn_mixed);
     $("#protect_new").prop("checked", settings.protect_new);
     $("#save_history").prop("checked", settings.save_history);
-    $("#auto_sync").prop("checked", lo_settings.auto_sync);
 
     // write out whitelist
     createWlUI();
@@ -140,15 +142,6 @@ function initEvents() {
         settings.save_history = $('#save_history').prop("checked");
         saveSettings();
     });
-
-    $('#auto_sync')[0].addEventListener('change', function() {
-        lo_settings.auto_sync = $('#auto_sync').prop("checked");
-        saveSettings();
-		
-		if (lo_settings.auto_sync) {
-			mergeSettingsSync();
-		}
-    });
     
     $('#new_wl')[0].addEventListener('keyup', function(e) {
       if (e.keyCode == 13) {
@@ -224,12 +217,4 @@ window.onfocus = function() {
     // re-evaluate things after returning to window
     initSettings();
     initIntrospection();
-};
-
-window.onblur = function() {
-	// sync settings (if appropriate) when we leave the settings window
-	// (throttling by Google forces us to be conservative here)
-	if (lo_settings.auto_sync === true) {
-		saveSettingsSync();
-	}
 };
