@@ -3,8 +3,8 @@
  * Some common utilities used in GB
  */
 
- 
 var settings = {
+	"timestamp" : 0,
     "protect_new" : false,
     "warn_mixed" : true,
 	"save_history" : false,
@@ -24,8 +24,13 @@ function saveSettings() {
     settings.timestamp = Date.now();
     
     /* save */
-    chrome.storage.local.set(settings, function(){
-        console.log("Settings saved: " + settings.timestamp);
+    chrome.storage.sync.set(settings, function(){
+		if (chrome.runtime.lastError === undefined) {
+			console.log("Settings saved: " + settings.timestamp);
+		} else {
+			console.log("Settings not saved: " + chrome.runtime.lastError.message);
+			delete chrome.runtime.lastError;
+		}
     });
 };
  
@@ -34,7 +39,7 @@ function saveSettings() {
  */
 function loadSettings(callback) {
 
-    chrome.storage.local.get(null, function(res) {
+    chrome.storage.sync.get(null, function(res) {
         
         if (res.timestamp) {
             settings = res;

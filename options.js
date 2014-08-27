@@ -1,23 +1,3 @@
-
-/*
- * Loads any synced settings or creates defaults
- */
-function initSettings() {
-
-    chrome.storage.local.get(null, function(res) {
-        
-        if (res.timestamp) {
-            settings = res;
-        }
-        else {
-            // no settings object found, so leave settings as default
-            console.log("No sync'd settings found; using defaults");
-        }
-        
-        applySettings();
-    });
-};
-
 /*
  * Applies settings to interface
  */
@@ -55,7 +35,6 @@ function createWlUI() {
         
         $("#whitelist")[0].appendChild(li);
     }
-
 }
 
 /*
@@ -203,6 +182,14 @@ function initIntrospection() {
         }
     });
 
+};
+
+/*
+ * Loads any synced settings or creates defaults
+ */
+function initSettings() {
+
+	loadSettings(function(){applySettings();});
 };
 
 document.addEventListener('DOMContentLoaded', function() {
