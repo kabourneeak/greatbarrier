@@ -106,3 +106,7 @@ function isIgnorableUrl(url) {
         
     return false;
 };
+
+function track(verb, msg) {
+	 console.log(verb + ":" + msg);
+};

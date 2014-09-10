@@ -145,6 +145,7 @@ function modifyWhiteList(action, site, createUndo) {
         }
 
         /* add to settings */
+		track("ADD", site);
         settings.wl.push(site);
         settings.wl.sort();
         
@@ -153,6 +154,7 @@ function modifyWhiteList(action, site, createUndo) {
         var index = settings.wl.indexOf(site);
     
         if (index != -1) {
+			track("DEL", settings.wl[index]);
             settings.wl.splice(index, 1);
         }
     } else {
@@ -227,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // collect asynchronous data
     settings = chrome.extension.getBackgroundPage().settings;
+	track("POP", "opened");
     data.tabReg = chrome.extension.getBackgroundPage().tabReg;
     data.whoops = chrome.extension.getBackgroundPage().popup_whoops;
     data.redirect = chrome.extension.getBackgroundPage().popup_redirect;
