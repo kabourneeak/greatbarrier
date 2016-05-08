@@ -64,9 +64,20 @@ function createWlEntryUI(index, wle) {
         e.preventDefault();
         deleteWlEntry(index);
     }, false);
+
+    var i_warn = document.createElement("input");
+    i_warn.type = "checkbox";
+    i_warn.id = "warn_only_" + index;
+    i_warn.className = "warn_only";
+    i_warn.checked = wle.warn_only;
+    i_warn.addEventListener('click', function (e) {
+        wle.warn_only = e.srcElement.checked;
+        saveSettings();
+    }, false);
     
     var li = document.createElement("li");
     li.appendChild(a_item);
+    li.appendChild(i_warn);
     li.appendChild(a_del);
     li.id = "li_" + index;
     li.className = "wl_entry";
@@ -95,7 +106,11 @@ function addNewWlEntry() {
     }
 
     /* add to settings */
-    settings.wl.push({ "url" : url });
+    settings.wl.push({
+        "url" : url,
+        "warn_only" : false
+    });
+
     settings.wl.sort(function(a, b) { return a.url.localeCompare(b.url); });
     
     // clear input

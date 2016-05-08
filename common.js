@@ -9,11 +9,11 @@ var settings = {
     "warn_mixed" : true,
 	"save_history" : false,
     "wl" : new Array(
-        {"url": "en.wikipedia.org"},
-        {"url": "gmail.com" },
-        {"url": "google.ca" },
-        {"url": "google.com" }, 
-        {"url": "googleusercontent.com"}
+        { "url": "en.wikipedia.org", "warn_only" : false },
+        { "url": "gmail.com", "warn_only": false },
+        { "url": "google.ca", "warn_only": false },
+        { "url": "google.com", "warn_only": false },
+        { "url": "googleusercontent.com", "warn_only": false }
         )
 }
 

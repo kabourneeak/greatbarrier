@@ -24,6 +24,15 @@ var tabReg = {
             this.add(tabId, 'white');
         },
 
+    addWhiteWarnOnly : function(tabId) {
+            if (tabId == -1) {
+                console.log("(" + tabId + ") ignoring blank tab");
+                return;
+            }
+
+            this.add(tabId, 'whitewarnonly');
+        },
+
     addBlack : function(tabId) {
             this.add(tabId, 'black');
         },
@@ -51,7 +60,14 @@ var tabReg = {
             
             return false;
         },
-     
+
+    isWhiteWarnOnly: function (tabId) {
+            if (this._list.hasOwnProperty(tabId))
+                return this._list[tabId] == 'whitewarnonly';
+
+            return false;
+        },
+
     isBlack : function(tabId){
             if (this._list.hasOwnProperty(tabId))
                 return this._list[tabId] == 'black';
@@ -87,13 +103,14 @@ var tabReg = {
         },
         
     isMixed : function() {
-            return ((this['white'] > 0) && (this['black'] > 0));
+            return ((this['white'] + this['whitewarnonly'] > 0) && (this['black'] > 0));
         },
     
     lastMixedState : false,
     
     _list : {},
     'white' : 0,
+    'whitewarnonly' : 0,
     'black' : 0,
     'unused' : 0,
     'protected' : 0,
@@ -143,15 +160,20 @@ function evalTab(tabId, url) {
 
     } else if (isIgnorableUrl(url)) {
         tabReg.rem(tabId);
-        console.log("(" + tabId +  ") ignoring this tab (built-in, etc.)");
+        console.log("(" + tabId + ") ignoring this tab (built-in, etc.)");
 
-    } else if (isOnWhitelist(url)) {
-        tabReg.addWhite(tabId);
-        
     } else {
-        tabReg.addBlack(tabId);
+        var site = extractSiteFromUrl(url);
+        var wle = getWhitelistEntry(site);
+
+        if (wle === false) {
+            tabReg.addBlack(tabId);
+        } else if (wle.warn_only) {
+            tabReg.addWhiteWarnOnly(tabId);
+        } else {
+            tabReg.addWhite(tabId);
+        }
     }
-    
 };
 
 /*
@@ -232,7 +254,7 @@ function onBeforeRequestHandler(info) {
                     || (tabReg.isUnused(info.tabId) && settings.protect_new);
 
     if (intercede) {
-        if (isOnWhitelist(info.url)) {
+        if (isOnWhitelist(info.url) || tagReg.isWhiteWarnOnly(tabId)) {
             //  .. allow nav to proceed unhindered
             return {cancel : false}
         } else {

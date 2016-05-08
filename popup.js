@@ -147,7 +147,7 @@ function modifyWhiteList(action, site, createUndo) {
         }
 
         /* add to settings */
-        settings.wl.push({ "url": site });
+        settings.wl.push({ "url": site, "warn_only" : false });
         settings.wl.sort(function (a, b) { return a.url.localeCompare(b.url); });
         
     } else if (action == "rem") {
