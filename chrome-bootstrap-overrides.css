@@ -41,6 +41,12 @@
   display: none;
 }
 
+.warn_only {
+    position: absolute !important;
+    top: 8px;
+    right: 32px;
+}
+
 .chrome-bootstrap .status_icon {
   float: left;
 }
