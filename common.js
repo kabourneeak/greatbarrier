@@ -8,7 +8,13 @@ var settings = {
     "protect_new" : false,
     "warn_mixed" : true,
 	"save_history" : false,
-    "wl" : new Array("en.wikipedia.org", "gmail.com", "google.ca", "google.com", "googleusercontent.com")
+    "wl" : new Array(
+        {"url": "en.wikipedia.org"},
+        {"url": "gmail.com" },
+        {"url": "google.ca" },
+        {"url": "google.com" }, 
+        {"url": "googleusercontent.com"}
+        )
 }
 
 var newTabUrls = ["chrome://newtab/",
@@ -81,9 +87,9 @@ function getWhitelistEntry(site){
 
     for (var i = 0; i < settings.wl.length; ++i) {
         var wle = settings.wl[i];
-        var iof = site.indexOf(wle);
+        var iof = site.indexOf(wle.url);
         
-        if ((iof >= 0) && (iof + wle.length == site.length))
+        if ((iof >= 0) && (iof + wle.url.length == site.length))
             return wle;
     }
     

@@ -107,9 +107,9 @@ function isOnWhitelist(url){
     
     for (var i = 0; i < settings.wl.length; ++i) {
         var wle = settings.wl[i];
-        var iof = url.indexOf(wle);
+        var iof = url.indexOf(wle.url);
         
-        if ((iof >= 0) && (iof + wle.length == url.length))
+        if ((iof >= 0) && (iof + wle.url.length == url.length))
             return true;
     }
     

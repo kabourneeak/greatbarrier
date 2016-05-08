@@ -40,9 +40,9 @@ function createWlUI() {
 /*
  * Creates the DOM Subtree corresponding to a WL entry
  */
-function createWlEntryUI(index, url) {
+function createWlEntryUI(index, wle) {
 
-    var url_t = document.createTextNode(url);
+    var url_t = document.createTextNode(wle.url);
 
     var dt = document.createElement("dt");
     dt.appendChild(url_t);
@@ -90,13 +90,13 @@ function addNewWlEntry() {
     url = extractSiteFromUrl(url);
     
     // check for duplicates
-    if (settings.wl.indexOf(url) != -1) {
+    if (isOnWhitelist(url)) {
         return;
     }
 
     /* add to settings */
-    settings.wl.push(url);
-    settings.wl.sort();
+    settings.wl.push({ "url" : url });
+    settings.wl.sort(function(a, b) { return a.url.localeCompare(b.url); });
     
     // clear input
     $('#new_wl').val("");
@@ -104,6 +104,16 @@ function addNewWlEntry() {
     // add to UI
     createWlUI();
 };
+
+function isOnWhitelist(url) {
+    for(var i = 0; i < settings.wl.length; ++i) {
+        if (settings.wl[i].url === url) {
+            return true;
+        }
+    }
+    
+    return false;
+}
 
 function initEvents() {
 
