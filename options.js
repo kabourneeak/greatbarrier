@@ -13,7 +13,7 @@ function applySettings() {
 
 function deleteWlEntry(index) {
 
-	track("DEL", settings.wl[index]);
+    console.log("delete entry " + index);    
     
     settings.wl.splice(index, 1);
 
@@ -95,7 +95,6 @@ function addNewWlEntry() {
     }
 
     /* add to settings */
-	track("ADD", url);
     settings.wl.push(url);
     settings.wl.sort();
     
@@ -110,19 +109,16 @@ function initEvents() {
 
     $('#protect_new')[0].addEventListener('change', function() {
         settings.protect_new = $('#protect_new').prop("checked");
-		track("GEN", "protect_new", settings.protect_new);
         saveSettings();
     });
 
     $('#warn_mixed')[0].addEventListener('change', function() {
         settings.warn_mixed = $('#warn_mixed').prop("checked");
-		track("GEN", "warn_mixed", settings.warn_mixed);
         saveSettings();
     });
 
     $('#save_history')[0].addEventListener('change', function() {
         settings.save_history = $('#save_history').prop("checked");
-		track("GEN", "save_history", settings.save_history);
         saveSettings();
     });
     
@@ -198,7 +194,6 @@ function initSettings() {
 
 document.addEventListener('DOMContentLoaded', function() {
     initSettings();
-	track("OPT", "Opened");
     initEvents();
     initAnim();
     initIntrospection();

@@ -186,7 +186,7 @@ function checkMixedStatus() {
         updateUI(tabReg.curActiveTabId);
 
         if (tabReg.isMixed()) {
-			track("MIX", "Mixed tabs now exist");
+            console.log("Mixed tabs now exist");
             
             if (settings.warn_mixed) {
                 chrome.notifications.create("mixedTabsWarning", notif, function(nId){
@@ -195,7 +195,7 @@ function checkMixedStatus() {
             }
             
         } else {
-			track("NMX", "No more mixed tabs");
+            console.log("No more mixed tabs");
             
             chrome.notifications.clear("mixedTabsWarning", function(wasCleared){
                 console.log("mixed tabs warning notification cleared");
@@ -239,8 +239,7 @@ function onBeforeRequestHandler(info) {
             //  .. cancel, and open in an Incognito window
             
             console.log("(" + info.tabId +  ") Redirecting non-whitelist entry to " + info.url);
-            track("INT"); // TODO from what protected URL?
-			
+            
 			if (settings.save_history) {
 				chrome.history.addUrl({url : info.url});
 			}
@@ -318,7 +317,7 @@ function onNotifButtonHandler(nId, bId) {
 };
 
 function init() {
-	track("BGS", "Starting extension");
+    console.log("Starting extension");
     
     /* hook events */
     
@@ -369,9 +368,7 @@ function init() {
     });
     
     /* load settings */
-    loadSettings(function(){
-		rebuildRegistry();
-	});
+    loadSettings(function(){rebuildRegistry();});
     
     // Notification events
     chrome.notifications.onButtonClicked.addListener(onNotifButtonHandler);
@@ -380,10 +377,6 @@ function init() {
             console.log("mixed tabs warning notification cleared");
         });
     });
-	
-	// TODO periodically save settings
-	
-	// TODO upload user-study tracking
 };
 
 /*
